@@ -1,10 +1,10 @@
 # GiftFlow 
 
 ## Informacje o projekcie
-uczelnia i wydział: Politechnika Białostocka Wydział Informatyki
-kierunek: Informatyka i Ekonometria
-przedmiot: Inżynieria Oprogramowania
-rok i semestr: 2026 semestr IV grupa 1
+* uczelnia i wydział: Politechnika Białostocka Wydział Informatyki
+* kierunek: Informatyka i Ekonometria
+* przedmiot: Inżynieria Oprogramowania
+* rok i semestr: 2026 semestr IV grupa 1
 
 ## Dokumentacja główna
 Wszystkie wymagane elementy sprawozdania (punkty 0-10) znajdują się w poniższym pliku:
