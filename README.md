@@ -4,7 +4,7 @@
 * uczelnia i wydział: Politechnika Białostocka Wydział Informatyki
 * kierunek: Informatyka i Ekonometria
 * przedmiot: Inżynieria Oprogramowania
-* rok i semestr: 2026 semestr IV
+* rok i semestr: 2 rok (semestr IV)
 * grupa: 1
 
 ## Dokumentacja główna
