@@ -8,29 +8,56 @@
 * grupa: 1
 * temat:
 
-Treść zadania projektowego 
-Moduł Zarządzania Beneficjentami i Korespondencją
-System GiftFlow służy do obsługi rocznego cyklu dystrybucji prezentów. Podstawowym podmiotem jest Beneficjent (posiadający unikalne ID, imię, nazwisko, wiek oraz dokładny adres z koordynatami GPS). Każdy Beneficjent może przesłać w danym roku dokładnie jeden List. List rejestrowany jest w systemie przez Elfa-Listonosza i zawiera listę życzeń oraz datę wpływu. Po rejestracji, system przesyła zapytanie do zewnętrznego systemu Grzecznościometr, który na podstawie danych behawioralnych zwraca Współczynnik Grzeczności (liczba 0-100).
+1.1. Moduł Beneficjentów i Obsługi Korespondencji
+System GiftFlow służy do kompleksowego zarządzania procesem obdarowywania dzieci. Głównym obiektem danych jest Beneficjent (dziecko), opisany przez: unikalny numer ID, imię, nazwisko, wiek oraz adres zamieszkania wraz ze współrzędnymi GPS.
+Każdy Beneficjent może wygenerować w systemie dokładnie jeden List na dany rok kalendarzowy. List posiada swoją datę wpływu, unikalny numer oraz treść (listę życzeń).
 
-Jeśli współczynnik jest mniejszy niż 50, List automatycznie otrzymuje status „Odrzucony”, co skutkuje utworzeniem zlecenia na Węgiel.
+Proces weryfikacji Listu przebiega następująco:
 
-Jeśli współczynnik wynosi 50 lub więcej, List otrzymuje status „Zatwierdzony”, co inicjuje proces produkcji zabawek z listy życzeń.
+Elf-Listonosz wprowadza List do systemu.
 
-Moduł Produkcji i Gospodarki Magazynowej
-Zatwierdzony List generuje jedno lub więcej Zleceń Produkcyjnych. Każde Zlecenie przypisane jest do konkretnego Warsztatu (nazwa, lokalizacja). W Warsztacie pracuje Brygada Elfów – każdy Elf ma określoną specjalizację (np. stolarz, elektronik) i przypisany jest do jednego Warsztatu. Aby zrealizować Zlecenie, system musi zarezerwować i pobrać z Magazynu odpowiednie Surowce. Surowiec opisany jest przez nazwę, typ oraz aktualny stan magazynowy. Wynikiem pracy jest Prezent, który posiada unikalny kod QR, wagę, wymiary (szerokość, wysokość, głębokość) oraz status (np. „W produkcji”, „Gotowy”, „Spakowany”). Każdy Prezent przechodzi obowiązkową Kontrolę Jakości wykonywaną przez Elfa-Inspektora.
+System przesyła zapytanie do zewnętrznego modułu Grzecznościometr. Moduł ten analizuje zachowanie dziecka i zwraca Współczynnik Grzeczności (liczba całkowita od 0 do 100).
 
-Moduł Logistyki, Załadunku i Transportu
-Gotowe Prezenty grupowane są w Ładunki przypisane do konkretnego sektora geograficznego. Każdy Ładunek przypisany jest do Sani (unikalny numer rejestracyjny). Sanie mają określony techniczny limit Ładowności (kg) oraz Pojemności (m³). System posiada funkcję Balansowania, która rozmieszcza Prezenty w Saniach tak, aby środek masy był optymalny (blokada startu przy przeciążeniu).
-Mikołaj (Główny Użytkownik) korzysta z modułu Nawigatora, który generuje Trasę jako listę Punktów Dostawy. Punkt Dostawy zawiera dane Beneficjenta i przewidywaną godzinę dotarcia (ETA). System w czasie rzeczywistym koryguje Trasę, pobierając dane z zewnętrznych modułów: GPS (aktualna pozycja) oraz Pogodynka (prędkość wiatru i opady).
+Logika decyzyjna: * Jeśli współczynnik wynosi 50 lub więcej, List otrzymuje status „Zatwierdzony”, co automatycznie generuje Zlecenie Produkcyjne na zabawki z listy życzeń.
 
-Moduł Archiwizacji i Raportowania
-Po dostarczeniu prezentu, Mikołaj oznacza go w systemie jako „Dostarczony”. 26 grudnia system automatycznie przenosi wszystkie dane z danego roku do Archiwum. Administrator systemu może wygenerować Raport Końcowy, który zawiera:
+Jeśli współczynnik wynosi poniżej 50, List otrzymuje status „Odrzucony”. W takim przypadku system automatycznie generuje zlecenie na Rózgę (standardowy przedmiot o stałych wymiarach i wadze), która zastępuje wszystkie inne prezenty.
 
-Zestawienie wydajności Warsztatów (liczba zrealizowanych zleceń).
+1.2. Moduł Produkcji i Gospodarki Magazynowej
+Zatwierdzone zlecenia trafiają do sekcji produkcyjnej. System zarządza strukturą Warsztatów (każdy posiada nazwę i specjalizację). W każdym Warsztacie pracuje Brygada Elfów.
 
-Bilans zużycia Surowców.
+Elf opisany jest przez: ID, imię, specjalizację oraz przypisanie do jednego konkretnego Warsztatu.
 
-Statystykę średniego czasu dostawy prezentu od momentu zatwierdzenia Listu.
+Aby zrealizować Zlecenie, system musi pobrać z Magazynu odpowiednie Surowce. Każdy Surowiec ma nazwę, typ (np. drewno, tkanina) oraz aktualnie dostępną ilość. System blokuje produkcję, jeśli stan magazynowy jest niewystarczający.
+
+Produktem końcowym jest Prezent. Każdy Prezent (w tym Rózga) posiada: unikalny kod QR, wagę (w kg), wymiary (wysokość, szerokość, głębokość w cm) oraz status (aktualny etap: „W produkcji”, „Gotowy”, „Spakowany”).
+
+Zanim Prezent opuści Warsztat, Elf-Inspektor musi przeprowadzić Kontrolę Jakości i oznaczyć go w systemie jako „Gotowy do wysyłki”.
+
+1.3. Moduł Logistyki, Planowania i Transportu
+Wszystkie gotowe Prezenty muszą zostać dostarczone w ciągu jednej nocy.
+
+System grupuje Prezenty w Ładunki. Każdy Ładunek przypisany jest do konkretnej jednostki transportowej – Sani.
+
+Sanie posiadają parametry techniczne: unikalny numer boczny, Maksymalną Ładowność (limit wagi) oraz Maksymalną Pojemność (limit objętości). System posiada wbudowany walidator: nie pozwoli na przypisanie Ładunku, który przekracza limity Sani.
+
+Mikołaj (Główny Użytkownik) korzysta z modułu Nawigatora. System generuje dla niego Trasę, która składa się z chronologicznej listy Punktów Dostawy.
+
+Każdy Punkt Dostawy jest powiązany z adresem Beneficjenta i zawiera informację o przewidywanej godzinie przybycia (ETA).
+
+Podczas lotu system w czasie rzeczywistym koryguje Trasę, pobierając dane z systemów zewnętrznych: GPS (aktualna prędkość i pozycja sań) oraz Pogodynka (ostrzeżenia o śnieżycach i kierunku wiatru).
+
+1.4. Moduł Administracji i Raportowania
+Po dostarczeniu każdego prezentu, Mikołaj (używając mobilnego terminala) zmienia status Prezentu na „Dostarczony”.
+
+W dniu 26 grudnia system wykonuje proces Archiwizacji – wszystkie dane o Listach, Produkcjach i Trasach z danego roku trafiają do bazy historycznej.
+
+Administrator Systemu może wygenerować Raport Końcowy, który automatycznie podlicza:
+
+Łączną liczbę rozdanych Prezentów oraz Rózg.
+
+Wydajność każdego Warsztatu (ile zleceń ukończono).
+
+Zużycie Surowców z Magazynu (raport braków do uzupełnienia na przyszły rok).
 
 [KLIKNIJ TUTAJ, ABY OTWORZYĆ PEŁNE SPRAWOZDANIE (PDF)](./sprawozdanie/Sprawozdanie_Finalne.pdf)
 
