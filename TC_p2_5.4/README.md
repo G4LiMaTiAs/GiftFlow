@@ -1,2 +1,1 @@
-p5.4 do poprawy złe opisy (za mało i złe screeny dołączone do ss)
-
+określanie celów i zakresu projektowanego systemu oraz korzyści z jego wdrożenia, projektowanie interefjsu użytkownika
