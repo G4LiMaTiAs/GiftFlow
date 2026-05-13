@@ -52,7 +52,8 @@ Celem projektu jest stworzenie nowoczesnej platformy do zarządzania usługami i
 
 
 
-\## Polecenie 
+\## Polecenie:
+
 Celem projektu jest stworzenie nowoczesnej platformy do zarządzania usługami
 internetowymi dla firmy światłowodowej Programix. Firma prowadzi sprzedaż internetu
 światłowodowego, instalację infrastruktury (kabli światłowodowych przeprowadzanych
